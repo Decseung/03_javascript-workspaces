@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <!-- 
+    📌 요소가 가지는 속성(Attribute 및 Property) 확인 및 제어
+    1. HTML Attribute
+      1) HTML 태그에 명시되어있는 속성을 의미함
+      2) 예시
+        <input type="text" name="mobile" id="mobile" class="inp">
+          → Attribute 총 4개 : type, name, id, class
+      3) 속성 제어하기 
+        (1) 속성값 가져오기 : Element.prototype.getAttribute(attribute)
+        (2) 속성값 수정하기 : Element.prototype.setAttribute(attribute, value)
+        (3) 속성 삭제하기 : Element.prototype.removeAttribute(attribute)
+        (4) 속성 존재 여부 확인하기 : Element.prototype.hasAttribute(attribute)
+    2. DOM Property
+      1) DOM 객체가 가지고 있는 속성
+      2) 개발자도구탭(F12)에서 Properties 통해 확인 가능
+      3) 속성 접근 방식 
+        (1) DOM객체.property명
+        (2) DOM객체['property명']
+      4) 속성 제어하기 
+        (1) 속성값 가져오기 : DOM객체.property명 | 객체['property명']
+        (2) 속성값 수정하기 : DOM객체.property명 = value;
+        (3) DOM객체['property명'] = value;
+
+    💡정리 
+      1. 주요 특징 
+                  | HTML Attribute     | DOM Property
+      -------------|--------------------|----------------------------------
+      위치         | HTML 텍스트 문서   | HTML DOM Tree
+      확인         | [F12] - [Elements] | [F12] - [Elements] - [Properties]
+      동작         | 정적               | 동적
+      Naming       | Dash Case          | Camel Case
+      
+      2. 주요 속성
+                  |  HTML Attribute    |  DOM Property
+      -------------|--------------------|----------------------------------
+      id 속성      |  id="man"          |  id: "man"
+      class 속성   |  class="blind"     |  className: "blind"
+      checked 속성 |  checked="checked" |  checked: true
+      width 속성   |  width="500px"     |  width: 500
+  -->
+
+  
+  <h2>속성(Attribute 및 Property)</h2>
+
+  <div id="img-container">
+    <img src="../assets/images/city1.jpg" width="100px" height="100px">
+  </div>
+
+  <button onclick="checkAndControlAttribute();">속성 확인 및 조작</button>
+
+  <script>
+    function checkAndControlAttribute() {
+      const $image = document.querySelector('#img-container > img');
+
+      // //HTML Attribute
+      // console.log($image.getAttribute('src'));
+      // console.log($image.getAttribute('width'));
+      // console.log($image.getAttribute("height"));
+      // console.log($image.getAttribute('alt')) // null
+      // $image.setAttribute("src", "../assets/images/city2.jpg")
+      // $image.setAttribute("width", '300px');
+
+      //Dom Property
+      console.dir($image) // console.dir -> directory 구조 확인
+      console.log($image.src)
+      console.log($image.width)
+      console.log($image['height'])
+
+      $image.width = 200;
+      // $image.height = '500px'; // dom property로는 number 타입이므로
+      $image.height = 500;
+    }
+  </script>
+
+  <hr>
+
+  <!-- 
+    📌 content 관련 속성 
+    1. Element.prototype.innerHTML 
+      1) 선택된 요소 내의 요소 노드의 HTML 마크업을 취득 및 변경해주는 property
+      2) setter와 getter로 활용 가능 
+      3) 구현이 간단하고 직관적이라는 장점이 있으나 XSS(Cross-Site Scripting Attacks)에 취약
+    2. Element.prototype.innerText
+      1) 선택된 요소 내의 HTML 마크업을 무시하고 텍스트만 취득 및 변경해주는 property
+      2) setter와 getter로 활용 가능 
+  -->
+  <h2>content 관련 속성</h2>
+
+  <div id="area1"><b>안녕하세요</b></div>
+  <div id="area2"><b>안녕하세요</b></div>
+
+  <button onclick="contentTest();">content 제어</button>
+
+  <script>
+    function contentTest() {
+      const $area1 = document.querySelector('#area1');
+      const $area2 = document.querySelector('#area2');
+      console.log($area1.innerText)
+      console.log($area2.innerHTML)
+      $area1.innerText = 'innerText로 조작' // 마크업은 취급하지 않는다. // 오직 text만 취급한다.
+      // innerHTML property : 선택적 요소의 내부 마크업(요소) 속성
+      $area2.innerHTML = `<h4 id='hungry'>배가고파요오</h4>` // 얘는 마크업까지 취급한다.
+      console.log($area1.innerText)
+      console.log($area2.innerHTML)
+    }
+  </script>
+
+
+  <!-- 
+    * XSS(Cross-site scripting)
+    공격자가 웹사이트에 악성 클라이언트 사이드 코드를 삽입할 수 있도록 하는 보안 취약점 공격 기법
+    innerHTML로 새로운 노드 추가 및 변경시 HTML 마크업 내에 자바스크립트 악성 코드가 포함되어있을 경우
+    파싱하는 과정에서 그대로 실행될 여지가 있음 
+  -->
+  <h4 id="XSS-test">XSS(Cross-Site Scripting Attacks) 테스트</h4>
+
+  <button onclick="XSSTest();">XSS 테스트</button>
+  <script>
+    function XSSTest() {
+      document.querySelector('#XSS-test').innerHTML = `<img src="x" onerror="alert('쁘아아아아ㅏ')"/>`
+    }
+  </script>
+
+  <hr>
+
+  <!-- 
+    📌 checked 관련 속성
+    1. 체크박스, 라디오 버튼에 부여되어있는 checked 값을 취득하거나 변경할 때 사용
+    2. checked property : checked 값을 논리값으로 반환 및 설정
+    3. checked attribute : checked 값을 문자열로 반환 및 설정
+  -->
+
+  <h2>checked 관련 속성</h2>
+  <div>
+    <input type="checkbox" name="hobby" value="sports" id="sports">
+    <label for="sports">운동</label>
+    <input type="checkbox" name="hobby" value="cook" id="cook">
+    <label for="cook">요리</label>
+    <input type="checkbox" name="hobby" value="reading" id="reading">
+    <label for="reading">독서</label>
+    <input type="checkbox" name="hobby" value="study" id="study" checked="checked">
+    <label for="study">공부</label>
+  </div>
+
+  <button onclick="checkedTest();">checked 관련 속성</button>
+
+  <script>
+    function checkedTest() {
+      // property로 조작
+      document.querySelector('#sports').checked = true;
+      document.querySelector('#study').checked = false;
+
+      // attribute로 조작
+      document.querySelector('#cook').setAttribute("checked", "checked");
+      document.querySelector('#sports').removeAttribute('checked')
+    }
+  </script>
+
+  <hr>
+
+  <!-- 
+    📌 CSS 관련 속성
+    1. 요소가 가지고 있는 style 속성 활용
+    2. inline 방식으로 CSS 가 처리됨 (style 속성을 주면 기존 CSS는 덮어쓰기됨)
+    3. CSS 속성 적용 방식
+      1) 마침표 : CSS 속성 이름을 Dash Case 에서 Camel Case 로 바꿔서 사용
+      2) 대괄호 : CSS 속성 이름을 문자열 형식으로 그대로 사용
+    4. 작성 예시
+      1) 마침표 : HTMLElement.style.fontSize = '12px';
+      2) 대괄호 : HTMLElement.style['font-size'] = '12px';
+  -->
+
+  <h2>style 관련 속성</h2>
+
+  <div id="box" style="background-color:blue">박스</div>
+
+  <button onclick="styleTest();">style 관련 속성</button>
+
+  <script>
+
+    function styleTest() {
+      const $box = document.querySelector('#box');
+
+      console.log($box.getAttribute('style')) // style attribute
+      console.log($box.style) // style property => {스타일속성:값, 스타일속성:값}
+
+      $box.style.width = '100px';
+      $box.style.backgroundColor = 'red';
+      $box.style.border = '3px dashed pink';
+      $box.style.textAlign = 'center';
+    }
+  </script>
+
+  <h3>연습</h3>
+
+  <ul id="list">
+    <li>목록1</li>
+    <li>목록2</li>
+    <li>목록3</li>
+    <li>목록4</li>
+    <li>목록5</li>
+  </ul>
+
+  <button onclick="practice();">실습</button>
+
+  <script>
+    function practice() {
+      // 1. li 요소들의 문구들 일괄적으로 "안녕하세요"로 변경
+      // 2. li 요소들의 배경색을 일괄적으로 "red"로 변경
+
+      const $listTest = document.querySelectorAll('#list > li');
+
+      $listTest.forEach((li)=>{
+        li.innerText = '안녕하세요';
+        li.style.backgroundColor = 'red'; // 다수 요소를 한번에 변경 시킬 경우 배열의 형태를 띄워 순회하면서 스타일을 변경 해줘야한다.
+      })
+    }
+  </script>
+
+  <hr>
+
+  <!-- 
+    📌 class 관련 속성
+    1. HTML 요소의 class attribute에 대응되는 DOM 객체의 property
+    2. className property : class attribute의 값을 문자열로 반환 및 설정
+       classList property : class attribute의 값들이 담겨있는 DOMTokenList 반환 
+  -->
+
+  <h2>class 관련 속성</h2>
+  
+  <style>
+    .area{
+      width: 100px;
+      height: 100px;
+      border: 1px solid black;
+    }
+    .circle {border-radius: 50%;}
+    .lightgray {background: lightgray;}
+    .yellow {background: yellow;}
+  </style>
+
+  <div class="area"></div>
+
+  <button onclick="classTest();">class 관련 속성</button>
+
+  <script>
+    function classTest() {
+      const $classArea = document.querySelector('.area');
+
+      console.log($classArea.classList) //DOMTokenList [클래스, 클래스. ..]
+      $classArea.classList.add('circle')
+      $classArea.classList.add('lightgray')
+      // $classArea.classList.add('lightgray')
+
+    // console.log($classArea.contains('lightgray'))
+    // console.log($classArea.contains('yellow'))
+
+
+    $classArea.classList.remove('circle')
+
+    $classArea.classList.toggle('yellow')
+
+    }
+
+    // DOMTokenList에서 제공하는 메소드
+    // 1) add(...className) : class 속성값 추가
+    // 2) contains() : 특정 class를 가지고 있는지 비교
+    // 3) remove(...className) : 해당 class 제거
+    // 4) toggle(className) : class 속성값 추가 및 제거
+
+  </script>
+
+  <hr>
+
+  <!-- 
+    📌 value 관련 속성
+    1. 입력양식 관련 요소로 부터 입력된 값을 취득하거나 변경할 때 사용
+    2. 텍스트 상자에 쓰여진 값을 가져오거나 변경할 수 있고
+      체크박스, 라디오 버튼에 부여되어있는 value 값을 가져오거나 변경할 수 있음 
+  -->
+
+  <h2>value 관련 속성</h2>
+      
+  <label for="username">이름 : </label> 
+  <input type="text" id="username"> <br>
+
+  <label for="addr">거주지 : </label>  
+  <select id="addr">
+    <option>서울</option>
+    <option>부산</option>
+    <option>광주</option>
+    <option>대구</option>
+    <option>전주</option>
+  </select>
+  <br>
+
+  <label for="interest">관심분야 : </label>
+  <input type="checkbox" name="interest" value="HTML" id="html">
+  <label for="html">HTML</label>
+  <input type="checkbox" name="interest" value="CSS" id="css">
+  <label for="css">CSS</label>
+  <input type="checkbox" name="interest" value="JavaScript" id="js">
+  <label for="js">JavaScript</label>
+  <br>
+
+  <button onclick="valueTest();">등록</button>
+
+  <br><br>
+
+  <div id="result" style="background:lightgray; width:500px;">결과출력되는영역</div>
+
+  <script>
+    function valueTest() {
+      // 사용자가 입력한 이름값, 선택한 거주지, 체크한 관심분야의 value들 가져오기
+      const $nameInput = document.querySelector('#username')
+      const $addrSelect = document.querySelector('#addr')
+      const $interestCheck = document.querySelectorAll("input[name='interest']"); //[<input/>,<input/>,<input/>,<input/>,<input/>]
+
+      document.querySelector('#result').innerHTML = `
+      <ul>
+        <li>이름: ${$nameInput.value}</li>
+        <li>거주지: ${$addrSelect.value}</li>
+      </ul>
+      `;
+
+
+    }
+
+  </script>
+
+  <hr>
+
+  <!-- 
+    📌 data 관련 속성 
+    1. 이미 정의되어있는 속성이 아닌 사용자 정의 속성을 지정할 때 사용
+    2. 주로 데이터 교환을 위해 특정 데이터를 저장하기 위해 사용
+    3. data- 접두사 다음에 임의의 이름을 붙여 사용함 (data-*)
+    
+        HTML Attribute       DOM Property
+      1) data-aaa=""        dataset.aaa     
+      2) data-aaa-bbb=""    dataset.aaaBbb  (dash 구분자는 자동으로 camel-case 처리됨)
+      3) data-aaaBbb=""     dataset.aaabbb  (대문자는 자동으로 소문자로 처리됨)
+  -->
+
+  <h2>data 관련 속성</h2>
+
+  <div id="person1" data-name="tom" data-aGe="30" data-home-address="newyork">TOM</div> 
+  <div id="person2">JESSICA</div>
+
+  <button onclick="dataTest();">data 관련 속성</button>
+
+  <script>
+    function dataTest() {
+      
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .area{
+      width: 100px;
+      height: 100px;
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 
+    📌 DOM 이란? 
+    1. Document Object Model, 문서 객체 모델
+    2. 웹 문서(HTML, XML)의 구조를 객체 지향적으로 표현한 프로그래밍 인터페이스
+    3. 웹 페이지의 각 요소들을 트리 구조의 객체로 나타내어 프로그래밍 언어(주로 JS)로 
+       해당 요소들에 접근하고 수정, 삭제, 생성 할 수 있게 도와줌 
+
+             ■■■ HTML ■■■                           ■■■ DOM tree ■■■
+
+          <html lang="ko">                              Document
+          <head>                                           ↓
+            <title>My Document</title>                    HTML
+          </head>                                     ↙          ↘
+          <body>                                  HEAD             BODY
+            <h1>Header</h1>                        ↓             ↙      ↘
+            <p>Paragraph</p>                     TITLE        H1          P
+          </bod.>                                  ↓           ↓          ↓
+          </html>                            "My Document"  "Header"  "Paragraph"
+
+    * DOM 트리란?
+    - HTML 문서의 각 요소 태그, 텍스트, 속성, 주석 등을 각각의 "노드(node)"라는 객체로 변환한다. 
+    - 이 노드 객체들이 부모-자식, 형제 관계로 연결되어 하나의 큰 트리 구조를 이룬다. => DOM 트리(DOM 구조)
+    - 즉, DOM 트리는 노드들의 계층적인 집합체를 의미한다. 
+    - 예시
+      <div id="main">Hello</div>   →   요소노드(div), 속성노드(id), 텍스트노드(Hello)           
+  -->
+
+  <!-- 
+                       ■■■  DOM 객체 계층 구조 ■■■ 
+
+                               EventTarget
+                                   ↑
+                                * Node
+                    ┌--------------┼------------┐
+                  Text        * Element       Comment
+                                   ↑
+                               HTMLElement
+          ┌------------------------┼------------------------┐
+      HTMLInputElement       HTMLBodyElement        HTMLAnchorElement ...   
+
+
+    📌 Node와 Element
+    1. Node는 DOM 트리를 구성하는 모든 노드의 상위 개념 
+       즉, 태그요소(Element Node), 텍스트노드(Text Node), 주석노드(Comment Node), 속성노드(Attribute Node) 모두 Node의 하위 개념
+    2. 그 중에 HTML요소(태그)만을 의미하는 객체를 Element라고 함
+    3. 즉, 모든 Element는 Node지만, 모든 Node가 Element는 아님 (텍스트, 주석 등은 Element가 아님)
+    4. 주요 인스턴스 속성 (property)
+       1) Element
+          (1) className    : class 속성(attribute)
+          (2) id           : id 속성(attribute)
+          (3) innerHTML    : 요소(element) 내에 포함된 HTML 또는 XML 마크업을 가져오거나 설정함
+          (4) scrollHeight : 요소(element) 콘텐츠의 총 높이
+          (5) scrollTop    : 수직 스크롤 바의 위치
+       2) Node
+          (1) firstChild      : 현재 Node의 첫 번째 자식 Node 반환, 없으면 null 반환
+          (2) lastChild       : 현재 Node의 마지막 자식 Node 반환, 없으면 null 반환
+          (3) previousSibling : 현재 Node의 이전 형제 Node 반환, 없으면 null 반환
+          (4) nextSibling     : 현재 Node의 다음 형제 Node 반환, 없으면 null 반환
+          (5) parentElement   : 현재 Node의 부모 Element 반환, 없으면 null 반환
+          (6) parentNode      : 현재 Node의 부모 Node 반환, 없으면 null 반환
+          (7) textContent     : 현재 Node와 그 자손의 텍스트 콘텐츠를 가져오거나 설정함
+
+
+    📌 DOM 객체를 반환(취득)하는 주요 메소드
+    1. Document.getElementById(id)
+       → 주어진 문자열과 일치하는 id 속성을 가진 요소를 Element 객체로 반환
+       → 없으면 null 을 반환
+      
+    2. Document.getElementsByClassName(class)
+       → 주어진 문자열과 일치하는 class 속성을 가진 모든 요소를 HTMLCollection 객체로 반환
+       → 없으면 null 을 반환
+       → 반환된 HTMLCollection 객체는 변경 사항이 실시간으로 반영되는 Live HTMLCollection 객체
+       → HTMLCollection 객체는 유사 배열(array-like object)이지만 엄밀히 배열과는 다름
+          1) HTMLCollection.length          : 컬렉션 항목의 갯수를 반환
+          2) HTMLCollection.item(index)     : 주어진 인덱스의 Node를 반환
+          3) HTMLCollection.namedItem(name) : 주어진 id 속성 또는 name 속성을 가진 Node를 반환
+          4) Array.prototype.forEach() 와 같은 Array 객체의 메소드는 사용할 수 없음
+    
+    3. Document.getElementsByTagName(tag)
+       → 주어진 문자열과 일치하는 모든 태그를 가진 HTMLCollection 객체를 반환
+       → 없으면 null 을 반환
+
+    4. Document.querySelector(selectors) **
+       → 제공한 선택자와 일치하는 문서 내 첫 번째 Element 객체를 반환
+       → 없으면 null 을 반환
+
+    5. Document.querySelectorAll(selectors) **
+       → 제공한 선택자와 일치하는 문서 내 모든 요소를 가진 NodeList 객체를 반환
+       → 반환된 NodeList 객체는 변경 사항이 실시간으로 반영되지 않는 Static NodeList 객체
+       → 없으면 null 을 반환
+
+    * 사용 시 주의 사항
+      작성된 DOM 객체의 Line 위치로 비교했을 때 JavaScript 코드보다 나중에 나타난 DOM 객체는 인식하지 못한다.
+      따라서 반드시 DOM 객체를 상단에 배치하고 JavaScript 코드를 하단에 배치해야 한다.
+
+    ----------------------------------------------------------------------------------
+                    | HTMLCollection           | NodeList
+    ----------------|--------------------------|--------------------------------------
+    대상            | DOM 요소                 | DOM 요소, Node(텍스트, 주석, 속성 등)
+    ----------------|--------------------------|--------------------------------------
+    생성 방법       | getElementsByTagName()   | querySelectorAll()
+                    | getElementsByClassName() | Node.childNodes
+    ----------------|--------------------------|--------------------------------------
+    Live 여부       | Yes                      | No  (querySelectorAll())
+                    |                          | Yes (Node.childNodes)
+    ----------------|--------------------------|--------------------------------------
+    Array 여부      | No                       | No
+    ----------------|--------------------------|--------------------------------------
+    유사 배열 여부  | Yes                      | Yes
+                    | 대괄호[]와 인덱스 지원   | 대괄호[]와 인덱스 지원
+    ----------------|--------------------------|--------------------------------------
+    length 속성     | Yes                      | Yes
+    ----------------|--------------------------|--------------------------------------
+    for    문       | Yes                      | Yes
+    for in 문       | Yes (Not Recommend)      | Yes (Not Recommend)
+    for of 문       | Yes                      | Yes
+    ----------------|--------------------------|--------------------------------------
+    forEach()       | No                       | Yes 
+    ----------------------------------------------------------------------------------
+  -->
+
+
+  <h2>id를 이용한 요소 노드 취득</h2>
+  
+  <div id="area1" class="area">
+    div 영역
+    <p id="area2">p 영역</p>
+  </div>
+  <div id="area1" class="area">
+    div 영역
+  </div>
+
+  <button onclick="getNodeById();">클릭</button>
+
+  <script>
+    function getNodeById() {
+      // 아이디가 area1인 요소 dom 객체로 취득 ( 중복된 id 값을 가진 요소들 중에 첫번째만 반환)
+      const area1El = document.getElementById('area1');
+      console.log(area1El)
+
+      console.log(document.getElementById('area2'));
+
+      // 존재하지 않는 id 제시시 null 반환
+      console.log(document.getElementById('test'));
+    }
+  </script>
+
+  <hr>
+
+  <h2>tag를 이용한 요소 노드 취득</h2>
+
+  <h5>김치찌개</h5>
+  <h5>된장찌개</h5>
+  <h5>고등어구이</h5>
+
+  <ul id="drink">
+    <li>커피</li>
+    <li>콜라</li>
+    <li>우유</li>
+  </ul>
+
+  <button onclick="getNodeByTagName();">클릭</button>
+
+  <script>
+    function getNodeByTagName() {
+      // h5 태그들의 요소 취득
+      const tag1 = document.getElementsByTagName('h5'); // 유사 배열
+      console.log(tag1); 
+      console.log(tag1.length)
+
+      // for(let i=0; i < tag1.length; i++) {
+      //   tag1[i].style.background = 'red';
+      // }
+
+      // 배열의 forEach 활용
+      Array.from(tag1).forEach((h5)=>{
+        h5.style.backgroundColor="red"
+      })
+
+      // #drink > li 선택
+      console.log(document.getElementById('drink').getElementsByTagName('li'));
+    }
+  </script>
+
+  <hr>
+
+  <h2>class를 이용한 요소 노드 취득</h2>
+
+  <ul id="available">
+    <li class="drink coffee">커피</li>
+    <li class="drink coke">콜라</li>
+    <li class="drink milk">우유</li>
+  </ul>
+  <ul id="unavailable">
+    <li class="drink soju">소주</li>
+    <li class="drink beer">맥주</li>
+  </ul>
+
+  <button onclick="getNodeByClassName();">클릭</button>
+
+  <script>
+    function getNodeByClassName() {
+      // 클래스가 drink인 요소
+      const drinks = document.getElementsByClassName('drink');
+      console.log(drinks)
+
+      // Array 객체로 변환 후 forEach
+      // [...drinks].forEach((drink)=>{
+      //   drink.style.color = "red"
+      // })
+    }
+  </script>
+
+  <hr>
+
+  <h2>selector를 이용한 요소 노드 취득</h2>
+
+  <div class="area">
+    <span class="first">first</span>
+  </div>
+  <div class="area">
+    <span class="second">second</span>
+  </div>
+
+  <button onclick="getNodeBySelector();">클릭</button>
+
+  <script>
+    function getNodeBySelector() {
+     const spanEl = document.querySelector(".area > span")
+     console.log(spanEl);
+
+     const secondEl = document.querySelector(".area > second");
+     console.log(secondEl);
+
+     spanEl.style.backgroundColor = 'gray';
+     spanEl.style.backgroundColor = 'yellow';
+    }
+  </script>
+
+  <ul id="list">
+    <li>커피</li>
+    <li>콜라</li>
+    <li>김치찌개</li>
+    <li>된장찌개</li>
+  </ul>
+
+  <button onclick="getNodeBySelectorAll();">클릭</button>
+
+  <script>
+    function getNodeBySelectorAll() {
+      const list = document.querySelectorAll("#list > li");
+      console.log(list)
+
+      list.forEach((li)=>{
+        li.style.backgroundColor = 'gray';
+      })
+    }
+  </script>
+
+</body>
+</html>
