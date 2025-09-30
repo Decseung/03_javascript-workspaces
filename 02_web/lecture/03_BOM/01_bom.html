@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    const $ = (selector) =>  document.querySelector(selector)
+  </script>
+</head>
+<body>
+
+  <!-- 
+    📌 BOM
+    1. Browser Object Model (브라우저 객체 모델)
+    2. 브라우저의 구성 요소를 JavaScript 객체로 저장한 뒤 사용할 수 있습니다.
+    3. 주요 BOM 요소
+      1) window
+        (1) 호스트 환경이 "브라우저"일 때 현재 스크립트가 작동 중인 창을 나타내는 전역 객체(global-object)
+        (2) 전역 변수 및 선언적 함수로 정의한 함수가 window 객체의 property로 저장됨 
+        (3) JavaScript 코드상에서 생략할 수 있습니다. (예: window.alert() → alert())
+      2) history
+        (1) 방문했던 경로를 기억하고 있는 객체
+        (2) 히스토리 객체를 이용해서 이전 화면으로 손쉽게 이동할 수 있음
+        (3) 사용 예시
+          ① 뒤로 가기        : history.back()    (history.go(-1))
+          ② 앞으로 가기      : history.forward() (history.go(1))
+          ③ 특정 위치로 가기 : history.go(N)
+      3) location
+        (1) 문서의 현재 위치에 대한 정보가 담긴 Location 객체를 반환
+        (2) 사용 예시
+          ① 새로운 페이지로 이동
+            location.href = 'https://www.naver.com'   , 뒤로 가기 가능 (.href 생략 가능)
+            location.assign('https://www.naver.com')  , 뒤로 가기 가능
+            location.replace('https://www.naver.com') , 뒤로 가기 불가능
+          ② 새로 고침
+            location.reload()
+      4) screen
+        (1) 브라우저 화면 정보를 관리하는 객체
+        (2) 화면의 너비/높이 정보를 알아낼 수 있음
+
+  -->
+
+  <!-- 
+    * 브라우저에 내장되어 있는 창 출력
+    1) [window.]alert(message)   
+        → 경고 대화 상자로 해당 메세지를 출력
+        → 확인 버튼 존재 (클릭시 창이 닫힘)
+
+    2) [window.]confirm(message) 
+        → 모달 대화 상자로 해당 메세지를 출력 
+        → 확인과 취소 버튼이 존재 
+          1) 확인 클릭시 true 반환 
+          2) 취소 및 ESC 키 누를시 false 반환 
+
+    3) [window.]prompt(message[, default])
+        → 사용자가 텍스트를 입력할 수 있도록 안내하는 선택적 메세지를 갖고 있는 대화 상자를 띄움
+        → 확인과 취소 버튼이 존재 
+          1) 확인 버튼 클릭시 텍스트 상자의 입력값을 string 타입으로 반환 
+          2) 취소 및 ESC 키 누를시 null 반환 
+        → default (Optional)
+           : 텍스트 입력 필드에 기본으로 채워 넣을 문자열
+  -->
+
+  <h2>alert / confirm / prompt</h2>
+
+  <button id="alert">alert창출력</button>
+  <button id="confirm">confirm창출력</button>
+  <button id="prompt">prompt챵출력</button>
+
+  <script>
+  $("#alert").addEventListener("click", (e) => {
+    window.alert("돌아가"); // 메세지, 확인버튼
+  })
+
+  $("#confirm").addEventListener('click', (e) => {
+    if(confirm('계속?')) { // 메세지, 확인버튼(true), 취소버튼(false)
+      console.log('맞음?')
+    }else{
+      console.log('진짜 맞음?')
+    }
+  })
+
+  $('#prompt').addEventListener('click', (e) => {
+    const answer = prompt('숫자다', 10) // 메세지, 텍스트상자, 확인버튼(입력값), 취소버튼
+    console.log(answer, typeof answer )
+  })
+  </script>
+  
+  <hr>
+
+  <!-- 
+    * 새로운 창 띄우기 
+      → window.open(url[, target[, features]]) 
+    1) 새로운 창을 띄울 수 있는 메소드
+    2) 새로 띄워진 창을 제어할 수 있도록 해당 창의 window 객체를 반환 
+    3) 새로 띄워진 창을 자식창, 해당 창을 열게 해준 창을 부모창 이라 함 
+    4) 인자값 
+       1) url      : 새로운 창에 띄우고자 하는 url 주소
+       2) target   : 띄우고자 하는 창의 이름 (해당 창 이름이 존재할 경우 새 창으로 열리지 않고 기존의 창에서 새로고침 됨)
+       3) features : 새로 띄울 창의 특성 
+           → width      : 창의 너비
+           → height     : 창의 높이
+           → top, left  : 창의 위치
+           → resizable  : 창 크기 조절 가능 여부 
+           → location   : 주소창 여부
+           → menubar    : 메뉴바 여부
+           → scrollbars : 스크롤바 여부
+           → status     : 상태표시줄 여부
+           → toolbar    : 도구모음 여부 
+    5) 유의사항 : feature(resizable ~ toolbar)는 브라우저별로 적용 가능 여부가 다름
+  -->
+
+  <h2>open</h2>
+
+  <button id="naver-popup">네이버 창</button> 
+
+  <script>
+    $('#naver-popup').addEventListener('click', (e) => {
+      open('https://www.naver.com', '', 'width=500, hieght= 500px, left=500')
+    })
+  </script>
+
+  <hr>
+
+  <!-- 
+    * 타이머 관련 함수 
+    1) [window.]setTimeout(callbackFn, millisecond);
+        → 해당 millisecond 후에 전달된 callbackFn이 단 한 번 동작됨
+
+    2) [window.]setInterval(callbackFn, millisecond);
+        → 해당 millisecond 마다 전달된 callbackFn이 반복적으로 동작됨 
+  -->
+
+  <h2>setTimeout</h2>  
+
+  <button id="timeout1">3초 뒤에 알람 출력</button>
+
+  <script>
+    $('#timeout1').addEventListener('click', e => {
+      setTimeout(() => {
+        aelrt('빵야')
+      },3000)
+    })
+  </script>
+
+  <h2>setInterval</h2>
+
+  <div id="time" style="font-size: 32px; color: red;"></div>
+  <button id="start-time">시계시작</button>
+
+  <script>
+  </script>
+
+  <hr>
+
+  <!-- 
+    * location 관련 
+    1) location.href          : 현재 주소창의 url 주소를 가지는 속성
+    2) location.assign(url)   : 전달된 url로 페이지 이동 (뒤로가기 가능)
+    3) location.replace(url)  : 전달된 url로 페이지 이동 (뒤로가기 불가능)
+    4) location.reload()      : 새로고침 (현재자리에서)
+  -->
+
+  <h2>location</h2>
+
+  <button onclick="console.log(location);">location객체확인</button> <br>
+
+  <a href="http://www.naver.com">네이버로 이동</a> <br>
+  <button id="google-btn">구글로 이동</button> <br>
+  <button id="refresh-btn">새로고침</button>
+  
+  <script>
+    
+  </script>
+
+  <hr>
+
+  <!-- 
+    * history 관련 
+    1) history.back()     : 이전페이지로 이동 
+    2) history.forward()  : 다음페이지로 이동
+    3) history.go(n)      : n단계 페이지로 이동
+  -->
+
+  <h2>history</h2>
+
+  <button onclick="console.log(history);">history객체확인</button> <br>
+
+  <button type="button" id="back-btn">뒤로가기</button> <br>
+  <button type="button" id="forward-btn">앞으로가기</button>
+
+  <script>
+
+  </script>
+
+  <hr>
+
+  <!-- 
+    * screen 관련 
+    1) screen.width       : 스크린 전체 너비
+    2) screen.height      : 스크린 전체 높이
+    3) screen.availWidth  : 스크린 가용 너비
+    4) screen.availHeight : 스크린 가용 높이
+
+    > 모니터 해상도에 따라 다름 
+      따라서 환경의 사용자든 동일하게 화면이 보여지도록 작업해야될때 주로 사용
+  -->
+
+  <h2>screen</h2>
+
+  <button onclick="console.log(screen)">screen객체확인</button>
+
+  <hr>
+
+  <!-- 
+    * navigator 관련 
+    1) navigator.userAgent : 브라우저 정보
+    2) navigator.language : 설정 언어 
+    3) navigator.platform : 운영체제
+    4) navigator.cookieEnabled : 쿠키 사용 여부
+  -->
+
+  <h2>navigator</h2>
+
+  <button onclick="console.log(navigator)">navigator객체확인</button>
+
+</body>
+</html>

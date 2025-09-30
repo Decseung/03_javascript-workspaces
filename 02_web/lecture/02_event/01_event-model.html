@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <!-- 
+    📌 이벤트 (Event)
+    1. DOM 객체에서 발생하는 어떤 시그널을 의미함 
+    2. 시스템에 일어나는 사건(Action) 또는 발생(Occurrence)을 의미함 
+    3. 주요 이벤트 발생 방식
+      1) 사용자의 액션에 의해서 발생(클릭, 키보드 입력, 마우스 움직임 등)
+      2) API의 이벤트 생성
+
+    📌 이벤트 핸들러 (Event Handler)
+    1. 이벤트가 발생했을 때 동작하는 함수(Function)를 이벤트 핸들러(Event Handler) 라고 함 
+      1) 이벤트 핸들러 : 이벤트가 발생하면 실행되는 코드
+      2) 이벤트 리스너 : 특정 이벤트가 발생했는지 감지하는 역할
+    2. 이벤트 핸들러가 동작할 때는 발생한 이벤트에 대한 각종 정보가 담긴 "이벤트 객체(Event Object)"가 인자로 자동 전달됨
+    3. 이벤트가 발생했을 때 이벤트 핸들러를 할당하는 방법을 "이벤트 모델(Event Model)"이라고 함
+      1) 고전 이벤트 모델
+      2) 표준 이벤트 모델
+      3) 인라인 이벤트 모델
+  -->
+
+
+  <!-- 
+    * 고전 이벤트 모델 
+    1. 이벤트 할당을 위해서 이벤트 핸들러 프로퍼티(Event Handler Property)를 활용하는 방법
+    2. 이벤트 종류 앞에 "on" 키워드를 붙이면 이벤트 핸들러 프로퍼티가 완성됨 
+       ex) onclick, onkeydown, onsubmit, onfocus 등
+    3. 하나의 이벤트에 하나의 이벤트 핸들러를 할당할 수 있음 (마지막에 등록한 이벤트 핸들러만 동작함)
+    4. 이벤트 할당 방식 예시
+       1) 익명 함수
+          요소.onclick = function(){ }
+       2) 화살표 함수
+          요소.onclick = () => { }
+       3) 기명 함수
+          function eventHandler(){  }
+          요소.onclick = eventHandler;
+  -->
+
+  <h2>고전 이벤트 모델 방식</h2>
+
+  <button id="btn1">고전이벤트모델1</button>
+  <button id="btn2">고전이벤트모델2</button>
+  <button id="btn3">고전이벤트모델3</button>
+
+  <script>
+    
+  </script>
+
+  <hr>
+
+  <!-- 
+    * 인라인 이벤트 모델 
+    1. HTML 요소에 직접 이벤트 핸들러 속성(Event Handler Attribute) 등록하고 이벤트 핸들러를 호출하는 방식
+    2. 이벤트 핸들러 작성시 주로 기명 함수를 사용함 
+    3. 이벤트 할당 방식 예시
+       <button type="button" onclick="inline()">
+       function inline(){
+
+       }
+  -->
+
+  <h2>인라인 이벤트 모델 방식</h2>
+
+  <button onclick="inlineModel();">인라인이벤트모델</button>
+
+  <script>
+    
+  </script>
+
+  <hr>
+
+
+  <!-- 
+    * 표준 이벤트 모델 
+    1. W3C에서 공식적으로 지정한 웹 표준의 이벤트 모델 방식 (최신 브라우저에서 다 지원)
+    2. EventTarget 인터페이스의 addEventListener() 메소드를 호출하는 방식
+    3. 하나의 이벤트에 여러 개의 이벤트 리스너를 할당할 수 있음 
+    4. 이벤트 할당 방식 예시
+      1) 익명 함수
+        요소.addEventListener('click', function(){ })
+      2) 화살표 함수
+        요소.addEventListener('click', () => { })
+      3) 기명 함수
+        function eventHandler(){ }
+        요소.addEventListener('click', eventHandler);
+  -->
+
+  <h2>표준 이벤트 모델 방식</h2>
+
+  <button id="btn4">표준이벤트모델1</button>
+  <button id="btn5">표준이벤트모델2</button>
+  <button id="btn6">표준이벤트모델3</button>
+
+  <script>
+    
+  </script>
+
+</body>
+</html>

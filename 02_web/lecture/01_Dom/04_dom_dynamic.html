@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <!-- 
+    📌동적으로 노드 생성 및 추가 
+    1. Document.prototype.createElement(tagName) : 인자로 전달받은 태그 이름에 해당하는 요소 노드 생성 후 반환 
+    2. Document.prototype.createTextNode(text)   : 인자로 전달받은 텍스트 값으로 텍스트 노드 생성 후 반환 
+    3. Node.prototype.appendChild(childNode)     : 인자로 전달받은 노드를 appendChild를 호출한 노드의 마지막 자식 노드로 추가
+  -->
+  <h2>동적으로 노드 생성 및 추가</h2>
+
+  <div id="drink">
+    <h4>커피</h4>
+  </div>
+
+  <button onclick="createNode();">노드 생성 및 추가</button>
+
+  <script>
+    function createNode() {
+      
+    }
+
+  </script>
+
+  <h3>void 요소 노드 생성 및 추가</h3>
+  
+  <div id="img-container"></div>
+
+  <button onclick="createVoidNode();">void 요소 노드 생성 및 추가</button>
+  
+  <script>
+    function createVoidNode() {
+      
+    }
+  </script>
+
+  <h3>복수의 노드 생성 및 추가</h3>
+
+  <ul id="food">
+    <li>김치찌개</li>
+  </ul>
+
+  <button onclick="createMultipleNodes();">복수의 노드 생성 및 추가</button>
+
+  <script>
+    function createMultipleNodes() {
+      
+    }
+  </script>
+
+  <hr>
+
+  <!-- 
+    📌노드 복사, 교체, 삭제
+    1. Node.prototype.cloneNode([deep: true|false]) 
+        → 노드의 사본을 생성해서 반환 
+        → deep(Optional) : 깊은 복사 여부 (기본값: false)
+                         : true로 설정시 깊은 복사하여 모든 자손 노드가 포함된 사본을 생성
+                         : false일 경우 얖은 복사를 진행하여 노드 자신만의 사본을 생성 
+
+    2. Node.prototype.replaceChild(newChild, oldChild) 
+        → 호출한 노드의 자식 노드 중 oldChild 노드를 newChild 노드로 교체
+        → oldChild 노드는 DOM에서 제거됨 
+
+    3. Node.prototype.removeChild(child) 
+        → 호출한 노드의 자식 노드를 찾아 DOM에서 제거
+
+    4. Element.prototype.remove()
+        → 호출한 노드를 DOM에서 제거
+  -->
+
+  <h2>노드 복사</h2>
+
+  <ul id="copy">
+    ul 영역
+    <li>li 영역</li>
+  </ul>
+
+  <div id="copy-result" style="width: 200px; background: lightgray;">
+
+  </div>
+
+  <button onclick="cloneNodeTest();">노드 복사</button>
+
+  <script>
+    function cloneNodeTest() {
+      
+    }
+  </script>
+
+  <hr>
+
+  <h2>노드 교체</h2>
+
+  <div id="replace">
+    <img src="../../assets/images/city1.jpg" width="200px">
+  </div>
+
+  <button onclick="replaceNodeTest();">노드 교체</button>
+
+  <script>
+    function replaceNodeTest() {
+      
+    }
+  </script>
+
+  <hr>
+
+  <h2>노드 삭제</h2>
+
+  <style>
+    #remove{
+      width: 200px;
+      height: 100px;
+      background:yellow;
+      display: flex;
+      justify-content: center;
+      align-items: center;;
+    }
+    #item1{background:red;}
+    #item2{background:orange}
+    #item3{background:green;}
+  </style>
+  <div id="remove">
+    <span id="item1">item1</span>
+    <span id="item2">item2</span>
+    <span id="item3">item3</span>
+  </div>
+
+  <button onclick="removeNodeTest();">노드 삭제</button>
+
+  <script>
+    function removeNodeTest() {
+
+    }
+  </script>
+
+
+</body>
+</html>

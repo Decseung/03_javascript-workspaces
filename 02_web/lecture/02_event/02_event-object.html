@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+  </script>
+</head>
+<body>
+  
+  <!--
+    📌 이벤트 객체 (Event Object) 
+    1. 이벤트가 발생했을 때 브라우저에 의해서 만들어짐 
+    2. 발생한 이벤트에 관한 상세 정보(이벤트 종류, 이벤트 대상 등)가 저장되어 있음 
+    3. 이벤트 핸들러의 매개변수로 이벤트 객체를 전달받고 사용함 
+    4. 관례적으로 이벤트 객체의 이름은 "event" 또는 "evt" 를 사용함 
+    5. 주요 인스턴스 속성
+      1) type 
+        (1) 이벤트의 종류를 의미함 
+        (2) 마우스 이벤트  : click, mouseover, mouseout, mousemove, mousedown, mouseup
+        (3) 폼 요소 이벤트 : submit, focus
+        (4) 키보드 이벤트  : keydown, keypress, keyup
+        (5) 포커스 이벤트  : focus, blur
+      2) target
+        (1) 이벤트가 발생한 가장 안쪽의 요소를 저장하고 있음 
+        (2) 실제 이벤트가 시작된 지점을 의미함 
+        (3) 이벤트 전파(이벤트 버블링, Event Bubbling)가 진행되어도 target은 변하지 않음 
+      3) currentTarget
+        (1) 이벤트가 발생한 지점이 아닌 실제 이벤트를 처리하는 요소를 의미함 
+        (2) 이벤트 전파(이벤트 버블링, Event Bubbling)가 진행되는 경우 실제 이벤트가 시작된 지점과 다른 요소일 수 있음 
+    6. 주요 인스턴스 메소드
+       1) preventDefault()           : 취소 가능한 이벤트를 취소함 
+       2) stopImmediatePropagation() : 다른 곳에서 이 특정 이벤트를 호출할 수 없도록 방지함 
+       3) stopPropagation()          : 이벤트 전파(이벤트 버블링, Event Bubbling)를 막음 
+  -->
+
+  <h2>이벤트 객체(Event Object) - 발생된 이벤트 정보 확인 및 이벤트 발생 대상 조작</h2>
+
+  <button id="origin">고전이벤트모델 방식</button>
+  <button id="inline" onclick="inline();">인라인이벤트모델 방식</button>
+  <button id="listener">표준이벤트모델 방식</button>
+
+  <script>
+
+    function inline(e) { // 기명합수는 직접 호출시 전달되는 데이터가 매개변수에 담김
+                          // Evnet 객체가 자동으로 전달되지 않음.
+     /* console.log('e', e)
+      console.log('e.type: ', e.type)
+      console.log('e.target', e.target)*/
+    }
+
+    $('#origin').onclick = function(e) {//이벤트 핸들러
+      // 이벤트가 발생되면 브라우저에서 Event 객체를 생성해서 window.event 프로퍼티에 저장
+      // console.log('window.event:' , window.event);
+      // console.log('windlow.event.type:', window.event.type);
+      // console.log('window.evnet.target:' , window.event.target);
+      console.log('e', e)
+      console.log('e.type', e)
+      console.log('e.target', e)
+
+      e.target.innerText = '마우스 클릭됨';
+      e.target.style.backgroundColor = "red";
+    }  
+
+  </script>
+
+  <hr>
+
+  <ul id="list-container">
+    <!-- li-->
+    <li id="item1">
+      <span class="content">item1</span> 
+      <span class="update">수정</span> 
+      <span class="delete">삭제</span>
+    </li>
+    <li id="item2">
+      <span class="content">item2</span> 
+      <span class="update">수정</span>
+       <span class="delete">삭제</span>
+      </li>
+    <li id="item3">
+      <span class="content">item3</span>
+       <span class="update">수정</span>
+        <span class="delete">삭제</span>
+      </li>
+  </ul>
+
+  <script>
+    // 각 아이템들마다 수정기능, 삭제기능
+  $('#list-container').addEventListener('click', (e) => {
+    // console.log(e.target) // 실질적으로 이벤트가 발생한 요소객체
+
+    if(e.target.classList.contains('update')){
+      console.log('수정버튼 클릭')
+      console.log(e.target.closest('li').querySelector('.content').innerText)
+    }
+
+    if(e.target.classList.contains('delete')){
+      console.log('삭제버튼 클릭')
+    }
+  })
+
+  </script>
+
+<hr/>
+
+<h4>버튼 클릭시 해당 버튼의 문구 색상으로 배경색이 변경되도록</h4>
+<button id="red-btn" class="color-btn">red</button>
+<button id="blue-btn" class="color-btn">blue</button>
+<button id="green-btn" class="color-btn">green</button>
+<button class="color-btn">pink</button>
+
+<script>
+  /*
+  $('#red-btn').addEventListener("click", ()=> {
+    $("#red-btn").style.backgroundColor = 'red';
+  })
+
+  $('#blue-btn').addEventListener("click", ()=> {
+    $("#blue-btn").style.backgroundColor = 'blue';
+  })
+
+  $('#green-btn').addEventListener("click", ()=> {
+    $("#green-btn").style.backgroundColor = 'green';
+  })
+  */
+
+ // 세개의 버튼.addEventListener("click, () => {
+ // 현재 클릭된 버튼.style.background = 현재 클릭된 버튼의 문구
+ // }")
+
+
+ // NodeList [button, button, button]
+
+ document.querySelectorAll('.color-btn').forEach((btn)=>{
+  btn.addEventListener('click', (e)=> {
+    e.target.style.backgroundColor = e.target.innerText
+  })
+  })
+
+</script>
+
+</body>
+</html>

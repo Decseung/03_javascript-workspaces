@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+  </script>
+</head>
+<body>
+
+  <!-- 
+    📌이벤트 전파 (Event Bubbling)
+    1. 요소들이 중첩되어 있을 경우 내부 요소에 이벤트 핸들러가 동작된 뒤 
+       상위 요소들의 이벤트 핸들러도 같이 동작되는걸 의미함
+    2. 최상위 조상에 도달할 때까지 이 과정은 계속해서 반복됨
+    3. 거의 모든 이벤트는 전파되지만, 모두 되는건 아님 (ex. focus 이벤트는 전파되지 않음)
+    4. 이벤트 객체의 stopPropagation() 메소드를 통해 이벤트 전파를 중지시킬수 있음 
+  -->
+
+
+  <h2>이벤트 전파 (Event Bubbling)</h2>
+
+  <style>
+    #ancestor { width: 240px; }
+    #parent   { width: 200px; }
+    #child    { width: 160px; }
+    .bubbling { margin: 10px; border: 1px solid gray; }
+  </style>
+  <div id="ancestor" class="bubbling">
+    조상div
+    <div id="parent" class="bubbling">
+      부모div
+      <div id="child" class="bubbling">
+        자식div
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $('#ancestor').addEventListener('click', (e) => {
+      console.log('조상 div 클릭이벤트 발생됨');
+    })
+    $('#parent').addEventListener('click', (e) => {
+      console.log('부모 div 클릭이벤트 발생')
+    })
+    $('#child').addEventListener('click', (e) => {
+      console.log('자식 div 클릭이벤트 발생')
+      e.stopPropagation();
+    })
+  </script>
+
+</body>
+</html>
