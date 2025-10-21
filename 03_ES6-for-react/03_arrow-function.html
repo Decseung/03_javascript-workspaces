@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      {
+        // ES5 문법
+        const hi = function () {
+          console.log("하위");
+        };
+
+        // ES6
+        const hello = () => {
+          console.log("하위");
+        };
+      }
+      /*
+        * 화살표 함수
+          (매개변수) => {
+            실행구문1;
+            실행구문2;
+            [return 값;]
+          }
+      */
+
+      {
+        // 실행구문의 차이
+        // - 실행 구문이 여러개라면 반드시 {} 필수 작성
+        const hi = () => {
+          console.log("hi");
+          console.log("hiii");
+        };
+
+        // 실행 구문이 한개라면 {} 생략 가능
+        const hello = () => console.log("hello");
+      }
+
+      {
+        // 매개변수의 개수의 차이
+        // - 매개변수가 없거나 여러개일 경우 () 필수 작성
+        const hi = () => console.log("hello");
+        const hello = (name, age) => console.log(`${name}, ${age}`);
+
+        // 매개변수가 하나일 경우 () 생략 가능
+        // const helloo = name => console.log(name); // 프리티어가 알아서 () 씌워줌
+      }
+
+      {
+        // 반환값의 차이
+        // - 다른 실행문과 함께 반환값이 존재할 경우 {} 필수 작성
+        const hi = () => {
+          console.log("hi");
+          return "안녕";
+        };
+
+        // - 별도의 실행문 없이 곧바로 특정 값을 반환하는 경우 {}, return 생략가능
+        const hi2 = () => "안녕";
+      }
+    </script>
+  </body>
+</html>

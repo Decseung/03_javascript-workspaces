@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 변수 선언 키워드 = var, let, cosnt
+      {
+        // var(ES5)
+        var userId; // 할당전(undefined)
+        var userId = "user01"; // 재선언 - 가능(동일 스코프에서 중복 선언 허용)
+        userId = "user02"; // 재할당 - 가능 (값 변경 가능)
+        function varScope() {
+          if (true) {
+            var userAge = 10;
+          }
+          console.log(userAge); // 스코프 - 함수 스코프(선언된 위치가 속해있는 함수 내에서 사용 가능)
+        }
+      }
+
+      {
+        // let (ES6)
+        let userId; // 할당전 - undefined
+        // let userId = 'user01' // 재선언 - 불가능
+        userId = "user01"; // 재할당 - 가능
+
+        function letScope() {
+          if (true) {
+            let userAge = 10;
+          }
+          console.log(userAge); // 스코프 - 블럭스코프(선언된 블럭에만 사용 가능)
+        }
+      }
+
+      {
+        // * const
+        // const userId;
+        const userId = "user01"; // 할당전 -사용 불가능
+        // const userId = 'user02'; // 재선언 - 불가능
+        // userId = "user02" // 재할당 - 불가능
+        function constScope() {
+          if (true) {
+            const userAge = 10;
+          }
+          // console.log(userAge) // 스코프 - 블럭 스코프
+        }
+      }
+    </script>
+  </body>
+</html>
