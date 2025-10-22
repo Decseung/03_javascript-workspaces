@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      {
+        // * 배열 구조 분해 할당
+        const fruits = ["apple", "banana", "kiwi"];
+        // 아래는 구조 분해 할당이 아님
+        // const a = fruits[0];
+        // const b = fruits[1];
+        // const c = fruits[2];
+
+        // 아래가 구조분해 할당임
+        const [a, b, c] = fruits;
+        console.log(a, b, c);
+
+        const vehicles = ["mustang", "f-150", "expedition"];
+        const [x, _, y] = vehicles;
+        console.log(x, y);
+
+        // Rest 문법
+        const [sportscar, ...cars] = vehicles; // 나머지 연산자 가능
+        console.log(sportscar, cars);
+
+        // 함수에서 다수의 데이터 반환
+        function calc(a, b) {
+          const add = a + b;
+          const substract = a - b;
+          const multiply = a * b;
+          const divide = a / b;
+
+          return [add, substract, multiply, divide];
+        }
+
+        const [add, sub, mul, div] = calc(4, 6);
+        console.log(add, sub, mul, div);
+        console.log("------------------------");
+      }
+      {
+        // * 객체 구조분해 할당
+        const car = {
+          maker: "bmw",
+          model: "x3",
+          year: 2025,
+        };
+
+        // 아래는 구조 분해 할당이 아님
+        // const ma = car.maker;
+        // const mo = car.model;
+        // const ye = car.year;
+
+        // 아래가 구조 분해 할당임
+        const { maker, model, year } = car; // 프로퍼티 명으로 하지 않으면 안됨
+        console.log(maker, model, year);
+
+        const qna = {
+          q: "한국의 수도는?",
+          a: "서울",
+        };
+
+        // 프로퍼티 명 말고 다른 이름으로 하고싶다면?
+        const { q: question, a: answer } = qna;
+        console.log(question, answer);
+
+        // function myCarInfo(mycar) {
+        //   const message = `My car is ${mycar.maker} ${mycar.model}`;
+        //   console.log(message);
+        // }
+
+        // 구조분해 할당 적용
+
+        // function myCarInfo(mycar) {
+        //   const { maker, model } = mycar;
+        //   const message = `My car is ${maker} ${model}`;
+        //   console.log(message);
+        // }
+
+        // 매개변수 안에서 바로 구조분해 할당
+
+        function myCarInfo({ maker, model }) {
+          const message = `My car is ${maker} ${model}`;
+          console.log(message);
+        }
+
+        myCarInfo(car);
+      }
+    </script>
+  </body>
+</html>

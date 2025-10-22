@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      {
+        // * 배열에서의 전개 구문
+
+        const nums = [1, 2, 3, 4, 5];
+        console.log(nums);
+        console.log(...nums);
+
+        // 배열 연결
+        const newNums = [...nums, 6, 7, 8, 9, 10];
+        console.log(newNums);
+        console.log(nums);
+
+        // 배열 병합
+        const arr1 = [1, 2, 3];
+        const arr2 = [4, 5, 6];
+        const newArr = [...arr1, ...arr2];
+      }
+
+      {
+        // * 객체에서의 전개구문
+        const user = {
+          name: "seyun",
+          age: 20,
+          address: "서울",
+        };
+
+        const newUser = {
+          ...user,
+          weight: 60,
+        };
+        console.log(user);
+        console.log(newUser);
+
+        // 객체 병합
+        const vehicle = {
+          brand: "Ford",
+          model: "Mustang",
+          color: "red",
+        };
+        const updateVehicle = {
+          type: "car",
+          color: "yellow",
+        };
+
+        const myUpdateVehicle = {
+          ...vehicle,
+          ...updateVehicle,
+        };
+        console.log(myUpdateVehicle);
+
+        // 기존 객체의 일부 프로퍼티는 유지하면서 특정 값 변경
+        const car = {
+          brand: "BMW",
+          model: "X3",
+          color: "black",
+        };
+
+        const modifiedCar = {
+          ...car,
+          model: "X5",
+        };
+        console.log(modifiedCar);
+      }
+    </script>
+  </body>
+</html>

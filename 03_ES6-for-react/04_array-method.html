@@ -5,5 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body></body>
+  <body>
+    <div class="container"></div>
+    <script>
+      {
+        // * filter
+        const nums = [12, 5, 90, 45, 1, 18, 2, 9];
+        const evens = nums.filter((num) => num % 2 === 0);
+        console.log(evens);
+      }
+      {
+        // * map : 각 요소들 가공 처리
+        const seasons = ["봄", "여름", "가을", "겨울"];
+
+        // seasons의 배열 요소들을 div 요소로 만들어 담긴 배열 취득
+        const $seasons = seasons.map((season, index) => {
+          return `<div>${index + 1}. ${season}</div>`;
+        });
+      }
+    </script>
+  </body>
 </html>
